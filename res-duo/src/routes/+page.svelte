@@ -20,39 +20,41 @@
   }
 </script>
 
-<div class="grid p-8 gap-4 h-screen w-screen content-center bg-blue-400 text-3xl">
-  <Container>
-    <div class="flex gap-2 justify-center">
-      <input type="number" class=" w-16 border" bind:value={bindedV} /> VOLT
-    </div>
-  </Container>
+<div class="grid p-8 h-screen w-screen place-items-center bg-blue-400 text-3xl">
+  <div class="grid gap-4 container">
+    <Container>
+      <div class="flex gap-2 justify-center">
+        <input type="number" class=" w-16 border" bind:value={bindedV} /> VOLT
+      </div>
+    </Container>
 
-  <Container>
-    <div class="w-full grid gap-3">
-      <input
-        type="range"
-        min={0}
-        max={allAvaiableResistors().length - 1}
-        bind:value={bindedR}
-      />
-      <span>
-        <span class="font-bold">{R}</span> OHM
-      </span>
-    </div>
-  </Container>
+    <Container>
+      <div class="w-full grid gap-3">
+        <input
+          type="range"
+          min={0}
+          max={allAvaiableResistors().length - 1}
+          bind:value={bindedR}
+        />
+        <span>
+          <span class="font-bold">{R}</span> OHM
+        </span>
+      </div>
+    </Container>
 
-  <Container>
-    <div class="w-full grid gap-3">
-      <input
-        step="0.000000000000000001"
-        type="range"
-        min={0}
-        max={1}
-        bind:value={bindedI}
-      />
-      <span>
-        <span class="font-bold">{I}</span> AMPERE
-      </span>
-    </div>
-  </Container>
+    <Container>
+      <div class="w-full grid gap-3">
+        <input
+          step="0.000000000000000001"
+          type="range"
+          min={0}
+          max={1}
+          bind:value={bindedI}
+        />
+        <span>
+          <span class="font-bold">{I}</span> AMPERE
+        </span>
+      </div>
+    </Container>
+  </div>
 </div>
