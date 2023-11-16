@@ -1,77 +1,58 @@
 <script lang="ts">
-  import Container from "$lib/Container.svelte";
+  import Container from "$lib/Components/container/Container.svelte";
+  import allAvaiableResistors from "$lib/Scripts/allAvaiableResistors";
+  import { ohm } from "$lib/Scripts/formule";
 
-  function allResPossibleValues(): number[] {
-    const base: number[] = [12, 15, 18, 22, 27, 33, 39, 47, 56, 68, 82];
+  let bindedV: number = 12;
+  let bindedR: number = allAvaiableResistors().indexOf(330);
+  let bindedI: number = bindedV / bindedR;
 
-    return base
-      .map((thisBase) => {
-        return [thisBase, thisBase * 10, thisBase * 100, thisBase * 1000];
-      })
-      .flat()
-      .sort((a, b) => a - b);
+  let V: number;
+  let R: number;
+  let I: number;
+
+  $: {
+    V = bindedV;
+    R = allAvaiableResistors()[bindedR];
+
+    I = ohm({ V, R }).I || bindedI;
+    bindedI = ohm({ V, R }).I || I;
   }
-
-  
-  const formule = {
-    ohmR: (V: number, I: number): number => {
-      return V / I;
-    },
-    ohmI: (V: number, R: number): number => {
-      return V / R;
-    },
-  };
-  
-  const DEFAULT_V = 12;
-  let resInputValue = 0;
-  
-  let allValues = {
-    R: allResPossibleValues()[0],
-    I: formule.ohmI(12, allResPossibleValues()[0]),
-    V: DEFAULT_V,
-  };
-
-  $: allValues.R = allResPossibleValues()[resInputValue];
 </script>
 
-<div class="grid p-8 gap-4 h-screen w-screen content-center bg-slate-300">
+<div class="grid p-8 gap-4 h-screen w-screen content-center bg-blue-400 text-3xl">
   <Container>
     <div class="flex gap-2 justify-center">
-      <input type="number" class="w-11 border" bind:value={allValues.V} on:input={() => {
-        allValues.I = formule.ohmI(allValues.V, allValues.R);
-        allValues.R = formule.ohmR(allValues.V, allValues.I);
-      }}/> VOLT
+      <input type="number" class=" w-16 border" bind:value={bindedV} /> VOLT
     </div>
   </Container>
 
   <Container>
-    <div class="w-full grid">
+    <div class="w-full grid gap-3">
       <input
         type="range"
         min={0}
-        max={allResPossibleValues().length - 1}
-        bind:value={resInputValue}
-        on:input={() => {
-          allValues.I = formule.ohmI(allValues.V, allValues.R);
-        }}
+        max={allAvaiableResistors().length - 1}
+        bind:value={bindedR}
       />
-      <span>{allValues.R} OHM</span>
+      <span>
+        <span class="font-bold">{R}</span> OHM
+      </span>
     </div>
   </Container>
 
   <Container>
-    <div class="w-full grid">
+    <div class="w-full grid gap-3">
       <input
-        step="0.01"
+        step="0.000000000000000001"
         type="range"
         min={0}
-        max={2}
-        bind:value={allValues.I}
-        on:input={() => {
-          allValues.R = formule.ohmR(allValues.V, allValues.I);
-        }}
+        max={0.4}
+        bind:value={bindedI}
       />
-      <span>{allValues.I} AMPERE</span>
+      <span>
+        <span class="font-bold">{I}</span> AMPERE
+      </span>
     </div>
   </Container>
 </div>
