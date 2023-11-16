@@ -47,7 +47,7 @@
         step="0.000000000000000001"
         type="range"
         min={0}
-        max={0.4}
+        max={1}
         bind:value={bindedI}
       />
       <span>
